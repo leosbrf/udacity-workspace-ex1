@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Movie from './Movie';
+import User from './User';
 
 /*
 Display a list of movies where each movie contains a list of users that favorited it.
@@ -58,7 +60,7 @@ const users = {
     userName: 'user123',
   },
   4: {
-    id: 3,
+    id: 4,
     name: 'John Doe',
     userName: 'user123',
   },
@@ -99,6 +101,28 @@ const movies = {
 
 class App extends Component {
   render() {
+    
+    let moviesToRender = Object.values(movies).map(movie => {
+      let likers = profiles.filter(p => p.favoriteMovieID == movie.id);
+      let usersWhoLikedThisMovie = Object.values(users).filter(u => likers.findIndex(liker => liker.userID == u.id) >= 0);
+      
+      let movieUsers = <p><i>None of the current users liked this movie</i></p>;
+      
+      if (usersWhoLikedThisMovie && usersWhoLikedThisMovie.length > 0) {
+        movieUsers = usersWhoLikedThisMovie.map(liker => {
+          return (<li key={liker.id}><User user={liker} /></li>)
+        });
+    
+    	movieUsers = <ul>{movieUsers}</ul>
+      }  
+      return (
+        <div key={movie.id}>
+        	<Movie movie={movie} />
+			{movieUsers}
+        </div>
+      );
+    });
+    
     return (
       <div className="App">
         <header className="App-header">
@@ -106,6 +130,7 @@ class App extends Component {
           <h1 className="App-title">ReactND - Coding Practice</h1>
         </header>
         <h2>How Popular is Your Favorite Movie?</h2>
+		{moviesToRender}
       </div>
     );
   }
