@@ -16,11 +16,12 @@ class ListItem extends PureComponent {
     
     const { show } = this.state;
     const buttonText = show ? 'Hide' : 'Show';
+	const numberOfGames = show ? this.props.user.numberOfGames : 0;
     
     return (
       	<React.Fragment>
           <li>
-              {this.props.user.userName} played {this.props.user.numberOfGames} games.
+              {this.props.user.userName} played {numberOfGames} games.
           </li>
           <Button text={buttonText} onClick={() => this.toggleShow()} />
 		</React.Fragment>
