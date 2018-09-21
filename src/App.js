@@ -29,6 +29,10 @@ class Normal1 extends React.Component {
   constructor(props) {
     super(props);
 
+    //ANTI-PATTERN: using props to generate state on getInitialState won't get state updated on subsequents calls
+    //because getInitialState is called only once. Therefore, it leads to duplication of "Source of Truth",
+    //because state and props will have different values. However, you can use getDerivedStateFromProps() lifecycle
+    //event to update the state for next props updates.
     this.state = {
       update: props.toggle,
     };
@@ -45,6 +49,7 @@ class Normal1 extends React.Component {
 }
 
 class Normal2 extends React.Component {
+  
   state = {
     update: this.props.toggle,
   };
